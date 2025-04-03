@@ -16,6 +16,7 @@ It also defines the basic methods
 #include <mutex>
 #include <sstream>
 #include <fstream>
+#include <unordered_map>
 using namespace std;
 
 // Define intersection class
@@ -26,23 +27,32 @@ public:
     bool is_mutex = capacity == 1 ? true : false;
 
     // Constructor
-    Intersection(string n, unsigned int c) : name(n), capacity(c) {}
+    Intersection(string name, unsigned int capacity) : name(name), capacity(capacity) {}
+    
+    // TODO: define Trains vector 
+    // TODO: Define mutex and semaphore functions to add and remove trains
 };
 
 // Define train class
 class Train {
 public:
     string name;
-    Intersection* intersection1;
-    Intersection* intersection2;
-    Intersection* intersection3;
+
+    // Create a vector to store the train's intersections
+    vector<Intersection*> route;
+
+    // Constructor
+    Train(string name, vector<Intersection*> route): name(name), route(route) {}
+
+    // TODO: Define methods to acquire and release intersections
 };
 
 // Parse the text
-void parseIntersections(const string& filename){
+unordered_map<string, Intersection*> parseIntersections(const string& filename){
+    // Create intersections unordered map so trains can access intersections by name
+    unordered_map<string, Intersection*> intersections;
     ifstream file(filename);
     string line;
-    int count = 0;
     
     while(getline(file, line)) { // While there is a next line
         stringstream ss(line);
@@ -52,31 +62,38 @@ void parseIntersections(const string& filename){
         getline(ss, name, ':');
         ss >> capacity;
 
-        cout << "Name : " << name << " | Capacity: " << capacity << endl;
+        cout << "Name : " << name << " , Capacity: " << capacity << endl;
         
-        count ++;
-        if(count == 1){
-            Intersection intersectionA(name, capacity);
-        } else if(count == 2){
-            Intersection intersectionB(name, capacity);
-        } else if(count == 3){
-            Intersection intersectionC(name, capacity);
-        } else if(count == 4){ 
-            Intersection intersectionD(name, capacity);
-        } else if(count == 5){
-            Intersection intersectionE(name, capacity);
-        } else {
-            printf("ERROR");
-        }
-
+        intersections[name] = new Intersection(name, capacity);
     }
+    
+    return intersections;
 }
 
-void parseTrains(const string& filename){
+unordered_map<string, vector<Intersection*>> parseTrains(const string& filename, unordered_map<string, Intersection*>& parseIntersections){
+ ifstream file(filename);
+ string line;
+ 
+ while(getline(file, line)) { // While there is a next line
+     stringstream ss(line);
+     string name;
+     string intersection1;
+     string intersection2;
+     string intersection3;
+     int count = 0;
+
+     getline(ss, name, ',');
+     getline(ss, intersection1, ',');
+     getline(ss, intersection2, ',');
+     ss >> intersection3;
+
+     cout << "Name : " << name << " , Intersections: " << intersection1 << ", " << intersection2 << ", and " << intersection3 << endl;
+     // TODO: read intersections into a route and verify that they exist in the intersections map
+ }
 
 }
 
 int main() { 
-    parseIntersections("intersections.txt");
-    parseTrains("trains.txt");
+    unordered_map<string, Intersection*> intersections = parseIntersections("intersections.txt");
+    parseTrains("trains.txt", intersections);
 }
