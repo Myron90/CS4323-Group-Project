@@ -7,3 +7,8 @@ Date: 4/1/2025
 Description: 
 */
 
+// Create shared memory
+
+// Create message queues
+
+// Store the mutexes and semaphores, set the values to match specified capacities
