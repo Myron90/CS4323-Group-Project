@@ -17,6 +17,7 @@ It also defines the basic methods
 #include <sstream>
 #include <fstream>
 #include <unordered_map>
+# include <semaphore.h>
 using namespace std;
 
 // Define intersection class
@@ -25,26 +26,62 @@ public:
     string name;
     unsigned int capacity;
     bool is_mutex;
+    unsigned int train_count = 0;
+
+    mutex mtx;
+    sem_t semaphore;
+    condition_variable cv;
 
     // Constructor
-    Intersection(string name, unsigned int capacity) : name(name), capacity(capacity), is_mutex(c==1) {}
+    Intersection(string name, unsigned int capacity) : name(name), capacity(capacity), is_mutex(capacity==1) {
+        if(!is_mutex){
+            sem_init(&semaphore, 0, capacity);
+        }
+    }
     
-    // TODO: define Trains vector 
-    // TODO: Define mutex and semaphore functions to add and remove trains
+    vector<Train*> trains_in_intersection;
+    
+    // Acquire train, called by the travel function
+    void acquire(Train* train) {
+        if(is_mutex){ // Mutex method
+            unique_lock<mutex> lock(mtx); // Unsure about this
+            // TODO: add communication
+            trains_in_intersection.push_back(train);
+            train_count++;
+        } else { // Semaphore method
+            // TODO: add communication
+            sem_wait(&semaphore); // Unsure about this
+            trains_in_intersection.push_back(train);
+            train_count++;
+        }
+    }
+    
+    // Release train, called by the travel function
+    void release(Train* train) {
+        if(is_mutex){
+            // TODO: add communication
+            // TODO: add any necessary mutex code here
+            trains_in_intersection.erase(find(trains_in_intersection.begin(), trains_in_intersection.end(), train));
+            train_count--;
+        } else {
+            // TODO: add communication
+            sem_post(&semaphore);
+            trains_in_intersection.erase(find(trains_in_intersection.begin(), trains_in_intersection.end(), train));
+        }
+    }
+
 };
 
 // Define train class
 class Train {
 public:
     string name;
-
-    // Create a vector to store the train's intersections
     vector<Intersection*> route;
+    Intersection current_location; // I think this will be helpful for the travel function
 
     // Constructor
     Train(string name, vector<Intersection*> route): name(name), route(route) {}
 
-    // TODO: Define methods to acquire and release intersections
 };
 
 // Parse the text
@@ -54,6 +91,7 @@ unordered_map<string, Intersection*> parseIntersections(const string& filename){
     ifstream file(filename);
     string line;
     
+    // Works for any number of intersections
     while(getline(file, line)) { // While there is a next line
         stringstream ss(line);
         string name;
@@ -78,23 +116,19 @@ unordered_map<string, Train*> parseTrains(const string& filename, unordered_map<
     while(getline(file, line)) { // While there is a next line
         stringstream ss(line);
         string name;
-        string intersection1, intersection2, intersection3;
+        string intersection;
         vector<Intersection*> route;
 
         getline(ss, name, ',');
-        getline(ss, intersection1, ',');
-        getline(ss, intersection2, ',');
-        ss >> intersection3;
-
-        cout << "Name : " << name << " , Intersections: " << intersection1 << ", " << intersection2 << ", and " << intersection3 << endl;
-        // Read intersections into a route, pulling from the intersections unordered map
-        route.push_back(intersections[intersection1]);
-        route.push_back(intersections[intersection2]);
-        route.push_back(intersections[intersection3]);
+        // Adjusted to work for any number of intersections
+        while(getline(ss, intersection, ',')){
+            route.push_back(intersections[intersection]);
+        ss >> intersection;
+        route.push_back(intersections[intersection]);
 
         trains[name] = new Train(name, route);
     }
-    
+
     return trains;
 }
 
