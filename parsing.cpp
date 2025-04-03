@@ -67,6 +67,7 @@ public:
             // TODO: add communication
             sem_post(&semaphore);
             trains_in_intersection.erase(find(trains_in_intersection.begin(), trains_in_intersection.end(), train));
+            train_count--;
         }
     }
 
