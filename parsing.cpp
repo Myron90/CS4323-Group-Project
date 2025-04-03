@@ -7,6 +7,7 @@ Date: April 2, 2025
 Description: This code reads the intersections and trains from their respective text files into objects.
 It also defines the basic methods
 */
+
 #include <iostream>
 #include <sstream>
 #include <vector>
@@ -21,8 +22,11 @@ using namespace std;
 class Intersection {
 public:
     string name;
-    int capacity;
-    bool is_mutex;
+    unsigned int capacity;
+    bool is_mutex = capacity == 1 ? true : false;
+
+    // Constructor
+    Intersection(string n, unsigned int c) : name(n), capacity(c) {}
 };
 
 // Define train class
@@ -38,23 +42,33 @@ public:
 void parseIntersections(const string& filename){
     ifstream file(filename);
     string line;
+    int count = 0;
     
     while(getline(file, line)) { // While there is a next line
-         stringstream ss(line);
-         string name;
-         int capacity;
-         bool is_mutex;
+        stringstream ss(line);
+        string name;
+        unsigned int capacity;
 
-         getline(ss, name, ':');
-         ss >> capacity;
+        getline(ss, name, ':');
+        ss >> capacity;
 
-         cout << "Name : " << name << " | Capacity: " << capacity << endl;
+        cout << "Name : " << name << " | Capacity: " << capacity << endl;
         
-        if(capacity == 1){
-            is_mutex = true;
+        count ++;
+        if(count == 1){
+            Intersection intersectionA(name, capacity);
+        } else if(count == 2){
+            Intersection intersectionB(name, capacity);
+        } else if(count == 3){
+            Intersection intersectionC(name, capacity);
+        } else if(count == 4){ 
+            Intersection intersectionD(name, capacity);
+        } else if(count == 5){
+            Intersection intersectionE(name, capacity);
         } else {
-            is_mutex = false;
+            printf("ERROR");
         }
+
     }
 }
 
