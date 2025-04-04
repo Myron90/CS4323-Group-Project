@@ -20,6 +20,7 @@ Description:
 #include <ctime>
 #include <cstdlib>
 
+// REFERENCE FOR: IPC MESSAGE QUEUES - Logan
 // Message structure for communication with the server
 struct msg_request {
     long mtype;        // Message type (ACQUIRE or RELEASE)
@@ -27,6 +28,7 @@ struct msg_request {
     char intersection[50];  // Intersection name
 };
 
+// REFERENCE FOR: IPC MESSAGE QUEUES - Logan
 // Message structure for server's response to the train
 struct msg_response {
     long mtype;       // Message type (GRANT, WAIT, DENY)
@@ -48,6 +50,7 @@ public:
         response_queue_id = resp_q_id;
     }
 
+    // REFERENCE FOR: IPC MESSAGE QUEUES - Logan
     // Function to request an intersection from the server
     void requestIntersection(const char* intersection_name) {
         msg_request request;
@@ -58,6 +61,7 @@ public:
         msgsnd(request_queue_id, &request, sizeof(request) - sizeof(long), 0);  // Send request
     }
 
+    // REFERENCE FOR: IPC MESSAGE QUEUES - Logan
     // Function to wait for the server's response
     void waitForResponse() {
         msg_response response;
@@ -69,12 +73,14 @@ public:
         }
     }
 
+    // REFERENCE FOR: TRAIN BEHAVIOR - Logan
     // Simulate train traversing the intersection
     void traverseIntersection(const char* intersection_name) {
         std::cout << "Train " << train_id << " is traversing intersection " << intersection_name << std::endl;
         sleep(2);  // Simulate time spent traversing the intersection
     }
 
+    // REFERENCE FOR: TRAIN BEHAVIOR - Logan
     // Simulate train's journey
     void travel() {
         for (const auto& intersection : route) {
@@ -85,6 +91,7 @@ public:
     }
 };
 
+// REFERENCE FOR: TRAIN FORKING (this file) - Logan
 void fork_train_processes(std::vector<Train> &trains) {
     for (auto &train : trains) {
         pid_t pid = fork();
@@ -101,6 +108,7 @@ void fork_train_processes(std::vector<Train> &trains) {
     }
 }
 
+// REFERENCE FOR: SERVER - Logan
 int main() {
     // Setup message queues for communication between server and trains
     key_t request_key = ftok("request_queue", 65);
