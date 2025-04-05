@@ -10,7 +10,8 @@ Description: Reads requests and responses sent between server and trains to writ
 
 
 
-#define Logging_File
+#ifndef LOGGING_FILE
+#define LOGGING_FILE
 
 #include <iostream>
 #include <chrono>
@@ -66,18 +67,21 @@ public:
 private:
     static std::string getCurrentTime() {
         using namespace std::chrono;
+        using std::chrono::seconds;
+        using std::chrono::microseconds;
+
 
         //GET TIME
         auto now = system_clock::now();
         auto duration = now.time_since_epoch();
-        auto seconds = duration_cast<seconds>(duration);
-        auto microseconds = duration_cast<microseconds>(duration % seconds(1));
+        auto sec = duration_cast<seconds>(duration);
+        auto microsec = duration_cast<microseconds>(duration % seconds(1));
 
         std::time_t t = system_clock::to_time_t(now); //TAKE SYSTEM TIME INTO A VARIABLE
         std::tm tm = *std::localtime(&t); // BREAKS DOWN TIME INTO HOURS, MINUTES, SECONDS, MS.
 
         std::ostringstream timeStream;
-        timeStream << std::put_time(&tm, "%H:%M:%S") << "." << microseconds.count();
+        timeStream << std::put_time(&tm, "%H:%M:%S") << "." << microsec.count();
         return timeStream.str();
     }
 };
