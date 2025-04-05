@@ -9,7 +9,6 @@ checking for deadlocks. Threads handle requests and update a resource graph, whi
 The program uses this graph to detect deadlocks by looking for cycles. If a deadlock is found, it alerts the user; 
 otherwise, it confirms everything is running smoothly. Mutexes and condition variables ensure threads work safely 
 and efficiently.
-
 */
 
 #include <iostream>
@@ -43,7 +42,7 @@ int main() {
         thread.join();
     }
 
-    // deadlock detection
+    // deadlock detection statement
     if (detectDeadlock(resourceGraph)) {
         std::cout << "Deadlock detected! Resolving...\n";
         // TO DO: implement deadlock resolution logic here
