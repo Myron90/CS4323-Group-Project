@@ -24,6 +24,7 @@ void generateConfig() {
 
     // Generate a 1-10 intersections
     int numIntersections = (std::rand() % 10) + 1;
+    printf("Number of intersections: %d\n", numIntersections);
 
     // Vector for intersections
     std::vector<std::string> intersections;
@@ -31,6 +32,7 @@ void generateConfig() {
     for (int i = 0; i < numIntersections; ++i) {
         // Generate 1-3 capacity per intersection
         int capacity = (std::rand() % 3) + 1;
+        printf("Intersection %d capacity: %d\n", i, capacity);
 
         // Set intersection number as alphabetical
         char alpha = 'A' + i;
@@ -52,6 +54,7 @@ void generateConfig() {
 
     // Generate a 1-10 trains
     int numTrains = (std::rand() % 10) + 1;
+    printf("Number of trains: %d\n", numTrains);
 
     for (int i = 0; i < numTrains; ++i) {
         // Generate random intersection number for route
