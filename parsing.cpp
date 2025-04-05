@@ -14,11 +14,14 @@ It also defines the basic methods
 #include <thread>
 #include <string>
 #include <mutex>
-#include <sstream>
 #include <fstream>
 #include <unordered_map>
-# include <semaphore.h>
+#include <semaphore.h>
+#include <condition_variable>
+#include <algorithm>
 using namespace std;
+
+class Train; // Forward declaration for the vector in Intersection
 
 // Define intersection class
 class Intersection {
@@ -78,7 +81,7 @@ class Train {
 public:
     string name;
     vector<Intersection*> route;
-    Intersection current_location; // I think this will be helpful for the travel function
+    Intersection* current_location = nullptr; // I think this will be helpful for the travel function
 
     // Constructor
     Train(string name, vector<Intersection*> route): name(name), route(route) {}
@@ -101,6 +104,7 @@ unordered_map<string, Intersection*> parseIntersections(const string& filename){
         getline(ss, name, ':');
         ss >> capacity;
 
+        // Debugging parsing, remove in submission
         cout << "Name : " << name << " , Capacity: " << capacity << endl;
         
         intersections[name] = new Intersection(name, capacity);
@@ -126,6 +130,14 @@ unordered_map<string, Train*> parseTrains(const string& filename, unordered_map<
             route.push_back(intersections[intersection]);
         ss >> intersection;
         route.push_back(intersections[intersection]);
+
+        // Debugging parsing, remove in submission
+        cout << "Train: " << name << " | Route: ";
+        for (auto* intersection : route) {
+            cout << intersection->name << " ";
+        }
+        cout << endl;
+        }
 
         trains[name] = new Train(name, route);
     }

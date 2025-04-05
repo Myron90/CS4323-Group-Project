@@ -4,7 +4,7 @@ Author: Logan Dawes
 Email: logan.dawes@okstate.edu
 Date: 04/05/2025
 
-Description: Generates a random initialization of intersections.txt and trains.txt for automated testing.
+Description: Performs various tests on each unit, then a system test.
 */
 
 #include <iostream>
@@ -15,6 +15,9 @@ Description: Generates a random initialization of intersections.txt and trains.t
 #include <string>
 #include <set>
 
+#include "parsing.cpp"
+
+// Generates a random initialization of intersections.txt and trains.txt for automated testing.
 void generateConfig() {
     // File: intersections.txt
     std::ofstream intersectionsFile("intersections.txt");
@@ -94,7 +97,15 @@ void generateConfig() {
     trainsFile.close();
 }
 
+// Test function to parse intersections and trains
+void parsingTest() {
+    parsedIntersections = parseIntersections("intersections.txt");
+    parsedTrains = parseTrains("trains.txt");
+}
+
+
 int main(){
     generateConfig();
+    parsingTest();
     return 0;
 }
