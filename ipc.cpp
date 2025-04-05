@@ -35,7 +35,7 @@ Description:
 
 #define shm_name "/shared_mem"
 #define mq_name "/msg_queue"
-#define size sizeof(int)
+#define SHARED_MEMORY_SIZE sizeof(int)
 
 struct msg_request{
     long mtype;
@@ -54,16 +54,17 @@ int main() {
     shm_fd = shm_open(shm_name, O_CREAT | O_RDWR, 0666); // Create shared memory
 
     ftruncate(shm_fd, size); // Set memory size
-    ptr = mmap(0, size, PROT_WRITE, MAP_SHARED, shm_fd, 0); // Shared memory pointer
+    ptr = (long long int*)mmap(0, size, PROT_WRITE, MAP_SHARED, shm_fd, 0); // Shared memory pointer
 
     // Message Queue
     key_t key;
     int msgid;
 
-    key = ftok(mq_name, mtype);
+    key = ftok(mq_name, 'A');
 
     msgid = msgget(key, 0666 | IPC_CREAT);
 
+    long mtype = 1;
     msgrcv(msgid, &message, sizeof(message), mtype, 0);
 
     msgctl(msgid, IPC_RMID, NULL);
