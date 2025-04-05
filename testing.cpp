@@ -14,6 +14,7 @@ Description: Performs various tests on each unit, then a system test.
 #include <vector>
 #include <string>
 #include <set>
+#include <cstring>
 
 #include "parsing.cpp"
 
@@ -41,7 +42,7 @@ void generateConfig() {
         char alpha = 'A' + i;
 
         // Add intersection to vector
-        std::string intersectionName = strncat("Intersection", &alpha, 1);
+        std::string intersectionName = "Intersection" + std::string(1, alpha);
         intersections.push_back(intersectionName);
 
         // Write to file
@@ -97,15 +98,8 @@ void generateConfig() {
     trainsFile.close();
 }
 
-// Test function to parse intersections and trains
-void parsingTest() {
-    parsedIntersections = parseIntersections("intersections.txt");
-    parsedTrains = parseTrains("trains.txt");
-}
-
-
 int main(){
     generateConfig();
-    parsingTest();
+    parsing();
     return 0;
 }
