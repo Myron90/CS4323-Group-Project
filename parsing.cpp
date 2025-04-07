@@ -88,7 +88,7 @@ public:
 
 };
 
-// Parse the text
+// Parse intersections.txt into objects of type Intersection
 unordered_map<string, Intersection*> parseIntersections(const string& filename){
     // Create intersections unordered map so trains can access intersections by name
     unordered_map<string, Intersection*> intersections;
@@ -113,6 +113,7 @@ unordered_map<string, Intersection*> parseIntersections(const string& filename){
     return intersections;
 }
 
+// Parse trains.txt into objects of type Train
 unordered_map<string, Train*> parseTrains(const string& filename, unordered_map<string, Intersection*>& intersections){
     ifstream file(filename);
     string line;
@@ -124,7 +125,7 @@ unordered_map<string, Train*> parseTrains(const string& filename, unordered_map<
         string intersection;
         vector<Intersection*> route;
 
-        getline(ss, name, ',');
+        getline(ss, name, ':');
         // Adjusted to work for any number of intersections
         while(getline(ss, intersection, ',')){
             route.push_back(intersections[intersection]);
