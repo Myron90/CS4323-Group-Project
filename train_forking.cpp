@@ -6,8 +6,8 @@ Date:
 Description: 
 */
 
-#ifndef LOGGING_H
-#define LOGGING_H
+#ifndef TRAIN_FORKING_H
+#define TRAIN_FORKING_H
 #include <iostream>
 #include <unistd.h>
 #include <sys/wait.h>
