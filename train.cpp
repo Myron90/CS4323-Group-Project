@@ -17,9 +17,12 @@ void train_forking() {
     // Create a vector to store pids for each train's fork
     std::vector<pid_t> train_pids;
 
+    std::vector<Train*> train_ptrs;
+
     // For every train in trains, create a fork
-    for(size_t i = 0; i < trains.size(); ++i){
-        Train* train = train_pids[i];
+    for(const auto& train_pair : trains){
+        Train* train = train_pair.second;  // Access the Train* from the map
+        train_ptrs.push_back(train);
 
         pid_t pid = fork();
     
@@ -41,4 +44,3 @@ void train_forking() {
     std::cout << "All trains have completed their routes!" << std::endl;
     
     }
-}
