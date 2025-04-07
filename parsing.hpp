@@ -1,5 +1,5 @@
-#ifndef PARSING_H
-#define PARSING_H
+#ifndef PARSING_HPP
+#define PARSING_HPP
 
 #include <iostream>
 #include <sstream>
@@ -25,7 +25,7 @@ public:
 
     pthread_mutex_t mtx;
     sem_t semaphore;
-    condition_variable cv;
+    std::condition_variable cv;
 
     std::vector<Train*> trains_in_intersection;
 
