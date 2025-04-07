@@ -5,6 +5,6 @@
 #include <sys/wait.h>
 #include "parsing.hpp"
 
-int train_forking();
+void train_forking();
 
 #endif
