@@ -82,7 +82,7 @@ public:
     }
 
     bool isOpen() { // Returns whether the intersection has an availability or not.
-        is_mutex ? train_count == 0 : train_count < capacity;
+        return is_mutex ? (train_count == 0) : (train_count < capacity);
     }
 };
 

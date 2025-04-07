@@ -5,6 +5,9 @@ Email: myron.peoples@okstate.edu
 Date: 
 Description: 
 */
+
+#ifndef TRAIN_FORKING_H
+#define TRAIN_FORKING_H
 #include <iostream>
 #include <unistd.h>
 #include <sys/wait.h>
@@ -42,3 +45,4 @@ int train_forking() {
     return 0;
 }
 
+#endif
