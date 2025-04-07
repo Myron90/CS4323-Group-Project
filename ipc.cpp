@@ -13,28 +13,7 @@ Description:
 
 // Store the mutexes and semaphores, set the values to match specified capacities
 
-/*
-Group B
-Author: Richard Powers
-Email: richard.w.powers@okstate.edu
-Date: 4/1/2025
-
-Description: 
-*/
-
-#ifndef IPC_H
-#define IPC_H
-
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <sys/ipc.h>
-#include <string.h>
-#include <fcntl.h>
-#include <sys/shm.h>
-#include <sys/stat.h>
-#include <sys/mman.h>
-#include <sys/msg.h>
+#include "ipc.hpp"
 
 #define shm_name "/shared_mem"
 #define mq_name "/msg_queue"
@@ -74,5 +53,3 @@ int ipc_setup() {
 
     return 0;
 }
-
-#endif

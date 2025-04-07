@@ -8,16 +8,7 @@ Description: Reads requests and responses sent between server and trains to writ
              Keeps track of simulated time and deadlock resolution steps.
 */
 
-
-
-#ifndef LOGGING_H
-#define LOGGING_H
-
-#include <iostream>
-#include <chrono>
-#include <iomanip>
-#include <sstream>
-#include <string>
+#include "logging.hpp"
 
 class writeLog {
 public:
@@ -85,5 +76,3 @@ private:
         return timeStream.str();
     }
 };
-
-#endif

@@ -6,12 +6,7 @@ Date:
 Description: 
 */
 
-#ifndef TRAIN_FORKING_H
-#define TRAIN_FORKING_H
-#include <iostream>
-#include <unistd.h>
-#include <sys/wait.h>
-#include "parsing.cpp"
+#include "train.hpp"
 
 int train_forking() {
     auto intersections = parseIntersections("intersections.txt");
@@ -44,5 +39,3 @@ int train_forking() {
     
     return 0;
 }
-
-#endif

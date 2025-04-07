@@ -10,10 +10,10 @@ The program uses this graph to detect deadlocks by looking for cycles. If a dead
 otherwise, it confirms everything is running smoothly. Mutexes and condition variables ensure threads work safely 
 and efficiently.
 */
-#include "parsing.h"
-#include "logging.h"
-#include "ipc.h"
-#include "train_forking.h"
+#include "parsing.hpp"
+#include "logging.hpp"
+#include "ipc.hpp"
+#include "train.hpp"
 #include <iostream>
 #include <vector>
 #include <map>
