@@ -9,7 +9,7 @@ Description:
 #include <unistd.h>
 #include <sys/wait.h>
 
-int main() {
+int train_forking() {
     // Declare the names of the trains and their routes manually
     std::string train1Name = "Train1";
     std::string train2Name = "Train2";
