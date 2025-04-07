@@ -8,22 +8,8 @@ Description: This code reads the intersections and trains from their respective 
 It also defines the basic methods
 */
 
-// parsing.h
-#ifndef PARSING_H
-#define PARSING_H
+#include "parsing.h"
 
-#include <iostream>
-#include <sstream>
-#include <vector>
-#include <thread>
-#include <string>
-#include <mutex>
-#include <fstream>
-#include <unordered_map>
-#include <semaphore.h>
-#include <pthread.h>
-#include <condition_variable>
-#include <algorithm>
 using namespace std;
 
 class Train; // Forward declaration for the vector in Intersection
@@ -174,5 +160,3 @@ void parsing() {
     unordered_map<string, Intersection*> parseIntersections(const string& filename);
     unordered_map<string, Train*> parseTrains(const string& filename, unordered_map<string, Intersection*>& intersections);
 }
-
-#endif

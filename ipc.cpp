@@ -46,7 +46,7 @@ struct msg_request{
     char intersection[50];
 } message;
 
-int main() {
+int ipc_setup() {
     
     // Shared Memory
     const int size = 1024;
