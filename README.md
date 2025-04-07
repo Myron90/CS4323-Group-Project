@@ -1,6 +1,17 @@
 # CS4323-Group-Project
 Repository for CS4323 Spring 2025 group project, the Multi-Train Railway Intersection Control System
 
+Compiling the programs:
+1. Log into the CSX server testing environment.
+2. Navigate to directory with the included files
+3. Run:
+./compile.sh
+4. Running the program:
+./server
+
+Tested on CSX server:
+csx1.cs.okstate.edu
+
 ## Files:
 ### intersections.txt
 - **Purpose**: Defines intersections and their capacities.

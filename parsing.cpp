@@ -133,6 +133,6 @@ unordered_map<string, Train*> parseTrains(const string& filename, unordered_map<
 }
 
 void parsing() { 
-    unordered_map<string, Intersection*> parseIntersections(const string& filename);
-    unordered_map<string, Train*> parseTrains(const string& filename, unordered_map<string, Intersection*>& intersections);
+    unordered_map<string, Intersection*> intersections = parseIntersections("intersections.txt");
+    unordered_map<string, Train*> trains = parseTrains("trains.txt", intersections);
 }
