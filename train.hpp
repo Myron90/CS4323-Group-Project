@@ -7,4 +7,5 @@
 
 void train_forking();
 
+void train_behavior();
 #endif

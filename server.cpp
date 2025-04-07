@@ -35,7 +35,10 @@ int main() {
     
     auto intersections = parseIntersections("intersections.txt");
     auto trains = parseTrains("trains.txt", intersections);
-    
+    ipc_setup();
+    receive_msg(requestQueueId, message);
+    send_msg(responseQueueId, message);
+    /*
     // example child processes communicating with the server
     std::vector<int> childProcesses = {1, 2, 3, 4};
     std::vector<std::thread> threads;
@@ -43,7 +46,7 @@ int main() {
     for (int processID : childProcesses) {
         threads.emplace_back(handleRequest, processID);
     }
-
+    */
     for (auto& thread : threads) {
         thread.join();
     }

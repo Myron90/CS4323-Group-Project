@@ -32,7 +32,8 @@ void train_forking() {
             cout << "ERROR";
             exit(1);
         }
-    
+    }
+
     for(size_t i = 0; i < train_pids.size(); ++i) {
         wait(NULL);
     }
