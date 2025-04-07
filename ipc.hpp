@@ -13,17 +13,28 @@
 #include <sys/msg.h>
 
 #define shm_name "/shared_mem"
-#define mq_name "/msg_queue"
+#define mq_request_key_path "/tmp/ipc_req"
+#define mq_response_key_path "/tmp/ipc_res"
 #define SHARED_MEMORY_SIZE sizeof(int)
+#define MSG_TYPE_DEFAULT 1
 
 struct msg_request {
     long mtype;
-    int train_id;
+    char command[10];
+    int train_name[20];
     char intersection[50];
 };
 
-extern msg_request message;
+// IPC request + response id's
+extern int requestQueueId;
+extern int responseQueueId;
+
+// Message struct
+extern msg_request message; 
 
 int ipc_setup();
+
+int send_msg(int msgid,const msg_request& msg);
+int receive_msg(int msgid, msg_request& msg, long mtype = MSG_TYPE_DEFAULT);
 
 #endif

@@ -30,7 +30,8 @@ int train_forking() {
             cout << "ERROR";
             exit(1);
         }
-    
+    }
+
     for(size_t i = 0; i < train_pids.size(); ++i) {
         wait(NULL);
     }
@@ -38,4 +39,16 @@ int train_forking() {
     std::cout << "All trains have completed their routes!" << std::endl;
     
     return 0;
+}   
+
+void train_behavior() {
+    msg_request msg;
+    msg.mtype = 1;
+    strcpy(msg.command, "ACQUIRE");
+    strcpy(msg.train_name, "Train1");
+    strcpy(msg.intersection, "IntersectionA");
+
+    send_msg(requestQueueId, msg);
+    recv_msg(responseQueueId, msg);
+
 }
