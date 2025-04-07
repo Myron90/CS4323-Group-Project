@@ -13,6 +13,7 @@ and efficiently.
 #include "parsing.h"
 #include "logging.h"
 #include "ipc.h"
+#include "train_forking.h"
 #include <iostream>
 #include <vector>
 #include <map>
