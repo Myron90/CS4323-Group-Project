@@ -12,6 +12,7 @@ and efficiently.
 */
 #include "parsing.h"
 #include "logging.h"
+#include "ipc.h"
 #include <iostream>
 #include <vector>
 #include <map>

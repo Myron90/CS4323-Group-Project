@@ -11,6 +11,7 @@ It also defines the basic methods
 // parsing.h
 #ifndef PARSING_H
 #define PARSING_H
+
 #include <iostream>
 #include <sstream>
 #include <vector>
@@ -169,3 +170,5 @@ void parsing() {
     unordered_map<string, Intersection*> parseIntersections(const string& filename);
     unordered_map<string, Train*> parseTrains(const string& filename, unordered_map<string, Intersection*>& intersections);
 }
+
+#endif

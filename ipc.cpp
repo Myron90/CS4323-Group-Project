@@ -22,6 +22,9 @@ Date: 4/1/2025
 Description: 
 */
 
+#ifndef IPC_H
+#define IPC_H
+
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -71,3 +74,5 @@ int main() {
 
     return 0;
 }
+
+#endif
