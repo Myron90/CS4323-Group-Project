@@ -22,8 +22,6 @@ struct msg_request {
     char intersection[50];
 };
 
-extern msg_request message;
-
 int ipc_setup();
 
 #endif

@@ -19,12 +19,6 @@ Description:
 #define mq_name "/msg_queue"
 #define SHARED_MEMORY_SIZE sizeof(int)
 
-struct msg_request{
-    long mtype;
-    int train_id;
-    char intersection[50];
-} message;
-
 int ipc_setup() {
     
     // Shared Memory
@@ -47,6 +41,7 @@ int ipc_setup() {
     msgid = msgget(key, 0666 | IPC_CREAT);
 
     long mtype = 1;
+    msg_request message;
     msgrcv(msgid, &message, sizeof(message), mtype, 0);
 
     msgctl(msgid, IPC_RMID, NULL);
