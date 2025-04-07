@@ -10,8 +10,8 @@ Description: Reads requests and responses sent between server and trains to writ
 
 
 
-#ifndef LOGGING_FILE
-#define LOGGING_FILE
+#ifndef LOGGING_H
+#define LOGGING_H
 
 #include <iostream>
 #include <chrono>

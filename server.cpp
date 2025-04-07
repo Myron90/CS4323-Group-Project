@@ -10,7 +10,8 @@ The program uses this graph to detect deadlocks by looking for cycles. If a dead
 otherwise, it confirms everything is running smoothly. Mutexes and condition variables ensure threads work safely 
 and efficiently.
 */
-
+#include "parsing.h"
+#include "logging.h"
 #include <iostream>
 #include <vector>
 #include <map>
@@ -29,7 +30,10 @@ std::map<int, std::vector<int>> resourceGraph;
 
 int main() {
     std::cout << "Server started...\n";
-
+    
+    auto intersections = parseIntersections("intersections.txt");
+    auto trains = parseTrains("trains.txt", intersections);
+    
     // example child processes communicating with the server
     std::vector<int> childProcesses = {1, 2, 3, 4};
     std::vector<std::thread> threads;

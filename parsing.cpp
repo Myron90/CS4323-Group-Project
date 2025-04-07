@@ -8,6 +8,9 @@ Description: This code reads the intersections and trains from their respective 
 It also defines the basic methods
 */
 
+// parsing.h
+#ifndef PARSING_H
+#define PARSING_H
 #include <iostream>
 #include <sstream>
 #include <vector>
@@ -17,6 +20,7 @@ It also defines the basic methods
 #include <fstream>
 #include <unordered_map>
 #include <semaphore.h>
+#include <pthread.h>
 #include <condition_variable>
 #include <algorithm>
 using namespace std;
@@ -31,49 +35,64 @@ public:
     bool is_mutex;
     unsigned int train_count = 0;
 
-    mutex mtx;
+    pthread_mutex_t mtx;
     sem_t semaphore;
     condition_variable cv;
 
     // Constructor
-    Intersection(string name, unsigned int capacity) : name(name), capacity(capacity), is_mutex(capacity==1) {
-        if(!is_mutex){
-            sem_init(&semaphore, 0, capacity);
+    Intersection(string name, unsigned int capacity) : name(name), capacity(capacity), is_mutex(capacity==1), train_count(0) {
+        if(is_mutex){ // Create mutex
+            pthread_mutexattr_t attr;
+            pthread_mutexattr_init(&attr);
+            pthread_mutex_attr_setpshared(&attr, PTHREAD_PROCESS_SHARED);
+            pthread_mutex_init(&mtx, &attr);
+        } else { // Create semaphore
+            sem_init(&semaphore, 1, capacity);
         }
     }
     
     vector<Train*> trains_in_intersection;
     
-    // Acquire train, called by the travel function
-    void acquire(Train* train) {
+    // Acquire train, called in travel function. Returns whether it was successfully acquired.
+    bool acquire(Train* train) {
         if(is_mutex){ // Mutex method
-            unique_lock<mutex> lock(mtx); // Unsure about this
-            // TODO: add communication
-            trains_in_intersection.push_back(train);
-            train_count++;
+            if(train_count == 0) { // If intersection is empty
+                pthread_mutex_lock(&mtx);
+                trains_in_intersection.push_back(train);
+                train_count++;
+                return true; // Train was acquired
+            } else {
+                return false; // Train was not acquired
+            }
         } else { // Semaphore method
-            // TODO: add communication
-            sem_wait(&semaphore); // Unsure about this
-            trains_in_intersection.push_back(train);
-            train_count++;
+            if (train_count < capacity) { // If there is room for another train
+                sem_wait(&semaphore); // Unsure about this
+                trains_in_intersection.push_back(train);
+                train_count++; // Train was acquired
+            } else {
+                return false; // Train was not acquired
+            }
+            
         }
     }
     
-    // Release train, called by the travel function
-    void release(Train* train) {
-        if(is_mutex){
-            // TODO: add communication
-            // TODO: add any necessary mutex code here
-            trains_in_intersection.erase(find(trains_in_intersection.begin(), trains_in_intersection.end(), train));
-            train_count--;
-        } else {
-            // TODO: add communication
-            sem_post(&semaphore);
-            trains_in_intersection.erase(find(trains_in_intersection.begin(), trains_in_intersection.end(), train));
-            train_count--;
+    // Release train, called by the travel function. Returns whether it was successfully released.
+    bool release(Train* train) {
+        // Find the specific train in the intersection
+        auto found_train = find(trains_in_intersection.begin(), trains_in_intersection.end(), train);
+        if(found_train != trains_in_intersection.end()) { // Unlock mutex and update semaphore for intersection
+            if(is_mutex){
+                pthread_mutex_unlock(&mtx);
+            } else {
+                sem_post(&semaphore);
+            }
         }
+        
     }
 
+    bool isOpen() { // Returns whether the intersection has an availability or not.
+        is_mutex ? train_count == 0 : train_count < capacity;
+    }
 };
 
 // Define train class
@@ -147,6 +166,6 @@ unordered_map<string, Train*> parseTrains(const string& filename, unordered_map<
 }
 
 void parsing() { 
-    unordered_map<string, Intersection*> intersections = parseIntersections("intersections.txt");
-    unordered_map<string, Train*> trains = parseTrains("trains.txt", intersections);
+    unordered_map<string, Intersection*> parseIntersections(const string& filename);
+    unordered_map<string, Train*> parseTrains(const string& filename, unordered_map<string, Intersection*>& intersections);
 }
