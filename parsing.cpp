@@ -84,11 +84,15 @@ public:
         if(found_train != trains_in_intersection.end()) { // Unlock mutex and update semaphore for intersection
             if(is_mutex){
                 pthread_mutex_unlock(&mtx);
+                return true;
             } else {
                 sem_post(&semaphore);
+                return true;
             }
+        } else {
+            cout << "Error: Train not found";
+            return false;
         }
-        
     }
 
     bool isOpen() { // Returns whether the intersection has an availability or not.
