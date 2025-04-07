@@ -8,7 +8,9 @@ Description:
 
 #include "train.hpp"
 
-int train_forking() {
+using namespace std;
+
+void train_forking() {
     auto intersections = parseIntersections("intersections.txt");
     auto trains = parseTrains("trains.txt", intersections);
 
@@ -17,7 +19,7 @@ int train_forking() {
 
     // For every train in trains, create a fork
     for(size_t i = 0; i < trains.size(); ++i){
-        Train* train = train_list[i];
+        Train* train = train_pids[i];
 
         pid_t pid = fork();
     
@@ -38,17 +40,5 @@ int train_forking() {
     
     std::cout << "All trains have completed their routes!" << std::endl;
     
-    return 0;
-}   
-
-void train_behavior() {
-    msg_request msg;
-    msg.mtype = 1;
-    strcpy(msg.command, "ACQUIRE");
-    strcpy(msg.train_name, "Train1");
-    strcpy(msg.intersection, "IntersectionA");
-
-    send_msg(requestQueueId, msg);
-    recv_msg(responseQueueId, msg);
-
+    }
 }

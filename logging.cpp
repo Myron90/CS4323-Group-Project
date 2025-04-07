@@ -10,12 +10,11 @@ Description: Reads requests and responses sent between server and trains to writ
 
 #include "logging.hpp"
 
-class writeLog {
-public:
+using namespace std;
 
 //==========================================================================================
 // INITIAL LOG
-    static void log(const std::string& source, const std::string& message) {
+    void writeLog::log(const std::string& source, const std::string& message) {
         std::string timestamp = getCurrentTime();
         std::cout << "[" << timestamp << "] " << source << ": " << message << std::endl;
     }
@@ -23,7 +22,7 @@ public:
 //==========================================================================================
 
     // TRAIN AND INTERSECTION REQUEST
-    static void logTrainRequest(const std::string& trainLetter, const std::string& intersectionLetter) {
+    void writeLog::logTrainRequest(const std::string& trainLetter, const std::string& intersectionLetter) {
         std::string timestamp = getCurrentTime();
         std::cout << "[" << timestamp << "] TRAIN" << trainLetter
                   << ": Sent ACQUIRE request for Intersection" << intersectionLetter << "." << std::endl;
@@ -33,7 +32,7 @@ public:
 
     //GRANT INTERSECTION
     //NOTE: ADDITIONAL MESSAGE IS FOR IF WE WANT TO ADD ANY ADDITIONAL DETAILS, SUCH AS A SEMAPHORE COUNT
-    static void logGrant(const std::string& trainLetter, const std::string& intersectionLetter, const std::string& additionalMessage = "") {
+    void writeLog::logGrant(const std::string& trainLetter, const std::string& intersectionLetter, const std::string& additionalMessage) {
         std::string timestamp = getCurrentTime();
         std::cout << "[" << timestamp << "] SERVER: GRANTED Intersection"
                   << intersectionLetter << " to Train" << trainLetter;
@@ -47,7 +46,7 @@ public:
 
 //==========================================================================================
     //ADD TO WAIT QUEUE
-    static void logLock(const std::string& trainLetter, const std::string& intersectionLetter) {
+    void writeLog::logLock(const std::string& trainLetter, const std::string& intersectionLetter) {
         std::string timestamp = getCurrentTime();
         std::cout << "[" << timestamp << "] SERVER: Intersection"
                   << intersectionLetter << " is locked. Train" << trainLetter << " added to wait queue." << std::endl;
@@ -55,8 +54,7 @@ public:
 
 //==========================================================================================
 
-private:
-    static std::string getCurrentTime() {
+    std::string writeLog::getCurrentTime() {
         using namespace std::chrono;
         using std::chrono::seconds;
         using std::chrono::microseconds;
@@ -75,4 +73,3 @@ private:
         timeStream << std::put_time(&tm, "%H:%M:%S") << "." << microsec.count();
         return timeStream.str();
     }
-};
