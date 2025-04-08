@@ -31,6 +31,8 @@ std::condition_variable cv;
 std::map<int, std::vector<int>> resourceGraph;
 
 int main() {
+    train_forking();
+
     std::cout << "Server started...\n";
     
     ipc_setup();
