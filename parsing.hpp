@@ -48,6 +48,4 @@ public:
 std::unordered_map<std::string, Intersection*> parseIntersections(const std::string& filename);
 std::unordered_map<std::string, Train*> parseTrains(const std::string& filename, std::unordered_map<std::string, Intersection*>& intersections);
 
-void parsing();
-
 #endif
